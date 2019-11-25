@@ -6,31 +6,31 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Point;
-import android.graphics.Rect;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import java.util.ArrayList;
+
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private MainThread thread;
 
-    private RectPlayer player;
     private Spitfire spitfire;
     private Point playerPoint;
     private BackgroundManager backgroundManager;
     private final Bitmap spitSprite;
+    private ArrayList<Bullet> gun = new ArrayList<>();
 
     public GamePanel(Context context) {
         super(context);
         getHolder().addCallback(this);
         Constants.CURRENT_CONTEXT = context;
         thread = new MainThread(getHolder(), this);
-        player = new RectPlayer(new Rect(100, 100, 200, 200), Color.rgb(255, 0, 0));
         this.spitSprite = BitmapFactory.decodeResource(getResources(),R.drawable.spitfire);
         spitfire = new Spitfire(spitSprite);
 
         playerPoint = new Point(150, 150);
-        backgroundManager = new BackgroundManager(400,550);
+        backgroundManager = new BackgroundManager();
         setFocusable(true);
     }
 
@@ -64,8 +64,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN:
+                gun.add(new Bullet(playerPoint,50));
             case MotionEvent.ACTION_MOVE:
                 playerPoint.set((int)event.getX(),(int)event.getY());
+
         }
         return true;
     }
@@ -73,6 +75,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     public void update() {
         backgroundManager.update();
         spitfire.update(playerPoint);
+
+        for(Bullet bullet: gun){
+            bullet.update();
+        }
     }
 
     @Override
@@ -81,5 +87,9 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         canvas.drawColor(Color.YELLOW);
         backgroundManager.draw(canvas);
         spitfire.draw(canvas);
+
+        for(Bullet bullet: gun){
+            bullet.draw(canvas);
+        }
     }
 }

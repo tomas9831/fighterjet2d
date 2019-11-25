@@ -1,7 +1,6 @@
 package com.example.semestralny_projekt;
 
 import android.graphics.Canvas;
-import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -9,21 +8,17 @@ import java.util.Random;
 
 
 public class BackgroundManager {
-    private ArrayList<Sprite> houseS;
-    private ArrayList<Sprite> palmS;
     ArrayList<Sprite>[] al;
     String[] itemArr;
     int[] limitVal;
 
-    private int obstacleGap, obstacleHeight;
+
     int palmLimit = 0;
     int limit = 0;
     private long startTime;
     Random ran = new Random();
 
-    public BackgroundManager(int obstacleGap, int obstacleHeight) {
-        this.obstacleGap = obstacleGap;
-        this.obstacleHeight = obstacleHeight;
+    public BackgroundManager() {
 
         startTime = System.currentTimeMillis();
 
@@ -50,19 +45,11 @@ public class BackgroundManager {
         al[0].add(new Sprite(0, 0, 0, 0, "house"));
         al[1].add(new Sprite(0, 0, 0, 0, "palm"));
 
-        /*int currY = -5 * Constants.SCREEN_HEIGHT / 4;
-        while (currY < 0) {
-            Log.d("currY", String.valueOf(currY));
-            Log.d("abcs", "podmienka");
-            int xStart = (int) (Math.random() * (Constants.SCREEN_WIDTH - obstacleGap));
-            palmS.add(new Sprite(obstacleHeight, xStart, currY, obstacleGap,"palm"));
-            currY += obstacleHeight + obstacleGap;
-        }*/
     }
 
     public void update() {
 
-         generate(al, 10, itemArr);
+         generate(al, 6, itemArr);
 
     }
 
@@ -81,7 +68,7 @@ public class BackgroundManager {
 
         int elapsedTime = (int) (System.currentTimeMillis() - startTime);
         startTime = System.currentTimeMillis();
-        float speed = Constants.SCREEN_HEIGHT / 4000.0f;
+        float speed = Constants.SCREEN_HEIGHT / 5000.0f;
         int index = 0;
         for(ArrayList<Sprite> arr: arrList){
             for (int i = 0; i < arr.size(); i++) {
