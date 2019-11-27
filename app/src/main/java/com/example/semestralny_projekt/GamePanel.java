@@ -13,6 +13,8 @@ import android.view.SurfaceView;
 import java.util.ArrayList;
 
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
+    private GameActivity gameActivity;
+    private String data;
     private MainThread thread;
 
     private Spitfire spitfire;
@@ -32,6 +34,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         playerPoint = new Point(150, 150);
         backgroundManager = new BackgroundManager();
         setFocusable(true);
+
+        gun.add(new Bullet(playerPoint,50));//init
     }
 
     @Override
@@ -78,7 +82,13 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
         for(Bullet bullet: gun){
             bullet.update();
+            /*
+            TODO causes tearing
+            if(bullet.getRectangle().top<=100){
+                gun.remove(bullet);
+            }*/
         }
+
     }
 
     @Override

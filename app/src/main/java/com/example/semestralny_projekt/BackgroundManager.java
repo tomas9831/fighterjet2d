@@ -81,7 +81,7 @@ public class BackgroundManager {
                 int xStart = ran.nextInt(1080);
                 int yRand = ran.nextInt(500);
                 if (limit < limitVal) {
-                    arr.add(0, new Sprite(xStart, -1 * yRand + 150, xStart + 150, -1 * yRand + 300, item[index]));
+                    arr.add(0, new Sprite(xStart, -2 * yRand + 150, xStart + 150, -2 * yRand + 300, item[index]));
                     limit++;
                 }
 
