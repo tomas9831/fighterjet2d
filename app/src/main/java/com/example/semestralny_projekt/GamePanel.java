@@ -17,7 +17,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private GameActivity gameActivity;
     private String levelData;
     private MainThread thread;
-
+    private OrientationData orientationData;
     private Spitfire spitfire;
     private Point playerPoint;
     private BackgroundManager backgroundManager;
@@ -39,6 +39,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         setFocusable(true);
 
         gun.add(new Bullet(playerPoint,50));//init
+        orientationData = new OrientationData();
 
 
     }
@@ -87,6 +88,17 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void update() {
+        int elapsedTime = (int)(System.currentTimeMillis() - System.currentTimeMillis());
+        if(orientationData.getOrientation() != null && orientationData.getStartOrientation() != null) {
+            float pitch = orientationData.getOrientation()[1] - orientationData.getStartOrientation()[1];
+            float roll = orientationData.getOrientation()[2] - orientationData.getStartOrientation()[2];
+
+            float xSpeed = 2 * roll * Constants.SCREEN_WIDTH/1000f;
+            float ySpeed = pitch * Constants.SCREEN_HEIGHT/1000f;
+
+            playerPoint.x += Math.abs(xSpeed*elapsedTime) > 5 ? xSpeed*elapsedTime : 0;
+            playerPoint.y -= Math.abs(ySpeed*elapsedTime) > 5 ? ySpeed*elapsedTime : 0;
+        }
         backgroundManager.update();
         spitfire.update(playerPoint);
 
@@ -97,6 +109,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
                 gun.remove(bullet);
             }
         }
+
 
     }
 

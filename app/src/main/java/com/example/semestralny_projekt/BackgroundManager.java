@@ -104,7 +104,7 @@ public class BackgroundManager {
                 s.incrementY(speed * elapsedTime);
             }
             if (arr.get(arr.size() - 1).getRectangle().top >= Constants.SCREEN_HEIGHT / 2) {
-                int xStart = ran.nextInt(1080);
+                int xStart = ran.nextInt(Constants.SCREEN_WIDTH - (size *100));
                 int yRand = ran.nextInt(500);
                 if (limit < limitVal) {
                     arr.add(0, new Sprite(xStart, -3 * size * yRand + 150 * size, xStart + 150 * size, -3 * size * yRand + 300 * size, item[index]));
