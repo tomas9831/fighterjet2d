@@ -27,29 +27,31 @@ public class BackgroundManager {
         initList();
         populateObstacles();
     }
-    private void initList(){
+
+    private void initList() {
         Constants.ITEM_SIZE = 2;
-        al = new ArrayList[ Constants.ITEM_SIZE];
-        for (int i = 0; i <  Constants.ITEM_SIZE; i++) {
+        al = new ArrayList[Constants.ITEM_SIZE];
+        for (int i = 0; i < Constants.ITEM_SIZE; i++) {
             al[i] = new ArrayList<>();
         }
-        itemArr = new String[ Constants.ITEM_SIZE];
-        limitVal = new int[ Constants.ITEM_SIZE];
-        itemArr[0] = "house";
-        itemArr[1] = "palm";
+        itemArr = new String[Constants.ITEM_SIZE];
+        limitVal = new int[Constants.ITEM_SIZE];
+        itemArr[0] = "building1";
+        itemArr[1] = "building2";
         limitVal[0] = 3;
         limitVal[1] = 10;
     }
+
     private void populateObstacles() {
 
-        al[0].add(new Sprite(0, 0, 0, 0, "house"));
-        al[1].add(new Sprite(0, 0, 0, 0, "palm"));
+        al[0].add(new Sprite(0, 0, 0, 0, "building1"));
+        al[1].add(new Sprite(0, 0, 0, 0, "building2"));
 
     }
 
     public void update() {
 
-         generate(al, 6, itemArr);
+        generate(al, 20, itemArr, 3);
 
     }
 
@@ -64,13 +66,13 @@ public class BackgroundManager {
         }
     }
 
-    public void generate(ArrayList<Sprite>[] arrList, int limitVal, String[] item) {
+    public void generate(ArrayList<Sprite>[] arrList, int limitVal, String[] item, int size) {
 
         int elapsedTime = (int) (System.currentTimeMillis() - startTime);
         startTime = System.currentTimeMillis();
         float speed = Constants.SCREEN_HEIGHT / 5000.0f;
         int index = 0;
-        for(ArrayList<Sprite> arr: arrList){
+        for (ArrayList<Sprite> arr : arrList) {
             for (int i = 0; i < arr.size(); i++) {
                 arr.get(i).incrementY(speed * elapsedTime);
             }
@@ -81,11 +83,11 @@ public class BackgroundManager {
                 int xStart = ran.nextInt(1080);
                 int yRand = ran.nextInt(500);
                 if (limit < limitVal) {
-                    arr.add(0, new Sprite(xStart, -2 * yRand + 150, xStart + 150, -2 * yRand + 300, item[index]));
+                    arr.add(0, new Sprite(xStart, -3 * size * yRand + 150 * size, xStart + 150 * size, -3 * size * yRand + 300 * size, item[index]));
                     limit++;
                 }
 
-                if (arr.get(arr.size() - 1).getRectangle().top >= Constants.SCREEN_HEIGHT + 0.2 * Constants.SCREEN_HEIGHT ) {
+                if (arr.get(arr.size() - 1).getRectangle().top >= Constants.SCREEN_HEIGHT + 50) {
                     arr.remove(arr.size() - 1);
                     if (limit > 0) {
                         limit -= 1;

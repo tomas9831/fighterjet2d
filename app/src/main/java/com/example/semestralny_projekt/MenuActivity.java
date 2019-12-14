@@ -23,11 +23,23 @@ public class MenuActivity extends AppCompatActivity {
                 openSand();
             }
         });
+        buttonCity = findViewById(R.id.buttonCity);
+        buttonCity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openCity();
+            }
+        });
     }
 
     public void openSand(){
         Intent intent = new Intent(this,GameActivity.class);
         intent.putExtra("level","sand");
+        startActivity(intent);
+    }
+    public void openCity(){
+        Intent intent = new Intent(this,GameActivity.class);
+        intent.putExtra("level","city");
         startActivity(intent);
     }
 }

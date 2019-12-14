@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private GameActivity gameActivity;
-    private String data;
+    private String levelData;
     private MainThread thread;
 
     private Spitfire spitfire;
@@ -23,21 +24,31 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private final Bitmap spitSprite;
     private ArrayList<Bullet> gun = new ArrayList<>();
 
-    public GamePanel(Context context) {
+    public GamePanel(Context context, String levelData) {
         super(context);
         getHolder().addCallback(this);
         Constants.CURRENT_CONTEXT = context;
+        backgroundManager = new BackgroundManager();
+        this.levelData = levelData;
+        Log.d("GamePanelData", this.levelData);
+        selectLevel(levelData);
         thread = new MainThread(getHolder(), this);
         this.spitSprite = BitmapFactory.decodeResource(getResources(),R.drawable.spitfire);
         spitfire = new Spitfire(spitSprite);
 
         playerPoint = new Point(150, 150);
-        backgroundManager = new BackgroundManager();
         setFocusable(true);
 
         gun.add(new Bullet(playerPoint,50));//init
+
+
     }
 
+    public void selectLevel(String level){
+        this.levelData=level;
+        Log.d("levelData: ", levelData);
+        //backgroundManager.setLevelType(levelData);
+    }
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         thread = new MainThread(getHolder(), this);
@@ -82,11 +93,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
         for(Bullet bullet: gun){
             bullet.update();
-            /*
-            TODO causes tearing
+
             if(bullet.getRectangle().top<=100){
                 gun.remove(bullet);
-            }*/
+            }
         }
 
     }
@@ -94,7 +104,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
-        canvas.drawColor(Color.YELLOW);
+        canvas.drawColor(Color.BLACK);
         backgroundManager.draw(canvas);
         spitfire.draw(canvas);
 
