@@ -2,6 +2,7 @@ package com.example.semestralny_projekt;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,7 +10,7 @@ import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
-public class GameActivity extends AppCompatActivity {
+public class GameActivity extends Activity {
 
     private Context context;
     private String levelData;

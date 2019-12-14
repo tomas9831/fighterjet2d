@@ -1,6 +1,8 @@
 package com.example.semestralny_projekt;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -11,21 +13,41 @@ public class BackgroundManager {
     ArrayList<Sprite>[] al;
     String[] itemArr;
     int[] limitVal;
+    String levelType;
+    String item1, item2;
+    int sizeMultiplier,color, itemNo;
 
-
-    int palmLimit = 0;
     int limit = 0;
     private long startTime;
     Random ran = new Random();
 
-    public BackgroundManager() {
+    public BackgroundManager(String levelType) {
 
         startTime = System.currentTimeMillis();
-
-        /*houseS = new ArrayList<>();
-        palmS = new ArrayList<>();*/
+        this.levelType = levelType;
+        chooseLevel(levelType);
         initList();
         populateObstacles();
+    }
+
+    private void chooseLevel(String levelType) {
+        switch (levelType) {
+            case "sand":
+                this.item1 = "house";
+                this.item2 = "palm";
+                this.sizeMultiplier = 1;
+                this.itemNo = 6;
+                this.color = Color.YELLOW;
+                break;
+            case "city":
+                this.item1 = "building1";
+                this.item2 = "building2";
+                this.sizeMultiplier = 3;
+                this.itemNo = 20;
+                this.color = Color.rgb(0,0,40);//midnight blue
+                break;
+        }
+
     }
 
     private void initList() {
@@ -36,33 +58,35 @@ public class BackgroundManager {
         }
         itemArr = new String[Constants.ITEM_SIZE];
         limitVal = new int[Constants.ITEM_SIZE];
-        itemArr[0] = "building1";
-        itemArr[1] = "building2";
+        itemArr[0] = this.item1;
+        itemArr[1] = this.item2;
         limitVal[0] = 3;
         limitVal[1] = 10;
     }
 
     private void populateObstacles() {
 
-        al[0].add(new Sprite(0, 0, 0, 0, "building1"));
-        al[1].add(new Sprite(0, 0, 0, 0, "building2"));
+        al[0].add(new Sprite(0, 0, 0, 0, this.item1));
+        al[1].add(new Sprite(0, 0, 0, 0, this.item2));
 
     }
 
     public void update() {
 
-        generate(al, 20, itemArr, 3);
+        generate(al, itemNo, itemArr, this.sizeMultiplier);
 
     }
 
     public void draw(Canvas canvas) {
 
-        for (Sprite palm : al[0]) {
-            palm.draw(canvas);
+        canvas.drawColor(this.color);
+
+        for (Sprite i1 : al[0]) {
+            i1.draw(canvas);
         }
 
-        for (Sprite h : al[1]) {
-            h.draw(canvas);
+        for (Sprite i2 : al[1]) {
+            i2.draw(canvas);
         }
     }
 

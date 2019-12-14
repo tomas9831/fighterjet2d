@@ -28,9 +28,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         super(context);
         getHolder().addCallback(this);
         Constants.CURRENT_CONTEXT = context;
-        backgroundManager = new BackgroundManager();
         this.levelData = levelData;
-        Log.d("GamePanelData", this.levelData);
+        backgroundManager = new BackgroundManager(levelData);
         selectLevel(levelData);
         thread = new MainThread(getHolder(), this);
         this.spitSprite = BitmapFactory.decodeResource(getResources(),R.drawable.spitfire);
@@ -104,7 +103,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
-        canvas.drawColor(Color.BLACK);
         backgroundManager.draw(canvas);
         spitfire.draw(canvas);
 
