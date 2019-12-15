@@ -31,6 +31,7 @@ public class MenuActivity extends AppCompatActivity {
                 openCity();
             }
         });
+
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int height = displayMetrics.heightPixels;

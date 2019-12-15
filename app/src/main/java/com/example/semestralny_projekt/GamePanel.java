@@ -40,6 +40,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
         gun.add(new Bullet(playerPoint,50));//init
         orientationData = new OrientationData();
+        orientationData.register();
 
 
     }
@@ -52,6 +53,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         thread = new MainThread(getHolder(), this);
+        Constants.INIT_TIME = System.currentTimeMillis();
         thread.setRunning(true);
         thread.start();
     }
@@ -64,7 +66,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
         boolean retry = true;
-        while (true) {
+        while (retry) {
             try {
                 thread.setRunning(false);
                 thread.join();
@@ -93,14 +95,16 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             float pitch = orientationData.getOrientation()[1] - orientationData.getStartOrientation()[1];
             float roll = orientationData.getOrientation()[2] - orientationData.getStartOrientation()[2];
 
-            float xSpeed = 2 * roll * Constants.SCREEN_WIDTH/1000f;
-            float ySpeed = pitch * Constants.SCREEN_HEIGHT/1000f;
+            float xSpeed = 2 * roll * Constants.SCREEN_WIDTH/10f;
+            float ySpeed = pitch * Constants.SCREEN_HEIGHT/10f;
+            Log.d("orientationRollX", String.valueOf(xSpeed));
+            Log.d("orientationRollY", String.valueOf(ySpeed));
 
             playerPoint.x += Math.abs(xSpeed*elapsedTime) > 5 ? xSpeed*elapsedTime : 0;
-            playerPoint.y -= Math.abs(ySpeed*elapsedTime) > 5 ? ySpeed*elapsedTime : 0;
+            //playerPoint.y -= Math.abs(ySpeed*elapsedTime) > 5 ? ySpeed*elapsedTime : 0;
+            Log.d("orientation", String.valueOf(playerPoint.x));
         }
-        backgroundManager.update();
-        spitfire.update(playerPoint);
+
 
         for(Bullet bullet: gun){
             bullet.update();
@@ -109,6 +113,9 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
                 gun.remove(bullet);
             }
         }
+
+        backgroundManager.update();
+        spitfire.update(playerPoint);
 
 
     }
