@@ -29,7 +29,7 @@ public class Enemy {
     }
 
     public void spawnBlimp() {
-        int yStart = ran.nextInt(Constants.SCREEN_HEIGHT / 3);
+        int yStart = (sizey) + (int) (Math.random() * ((Constants.SCREEN_HEIGHT / 3) - sizey));
         int xStart = Constants.SCREEN_WIDTH + (int) (Math.random() * ((Constants.SCREEN_WIDTH * 4 - Constants.SCREEN_WIDTH) + 1));
         rectangle.set(xStart - sizex,
                 yStart - sizey,
