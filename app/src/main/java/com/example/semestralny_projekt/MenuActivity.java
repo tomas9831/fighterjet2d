@@ -11,7 +11,7 @@ import android.widget.Button;
 
 public class MenuActivity extends AppCompatActivity {
 
-    private Button buttonSand, buttonCity;
+    private Button buttonSand, buttonCity, buttonScore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,24 +32,36 @@ public class MenuActivity extends AppCompatActivity {
                 openCity();
             }
         });
-
+        buttonScore = findViewById(R.id.buttonScore);
+        buttonScore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openScore();
+            }
+        });
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int height = displayMetrics.heightPixels;
         int width = displayMetrics.widthPixels;
         Constants.SCREEN_HEIGHT = height;
         Constants.SCREEN_WIDTH = width;
-        Constants.mediaPlayer = MediaPlayer.create(getApplicationContext(),R.raw.gunshot);
+        Constants.mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.gunshot);
     }
 
-    public void openSand(){
-        Intent intent = new Intent(this,GameActivity.class);
-        intent.putExtra("level","sand");
+    public void openSand() {
+        Intent intent = new Intent(this, GameActivity.class);
+        intent.putExtra("level", "sand");
         startActivity(intent);
     }
-    public void openCity(){
-        Intent intent = new Intent(this,GameActivity.class);
-        intent.putExtra("level","city");
+
+    public void openCity() {
+        Intent intent = new Intent(this, GameActivity.class);
+        intent.putExtra("level", "city");
+        startActivity(intent);
+    }
+
+    public void openScore() {
+        Intent intent = new Intent(this, HighScore.class);
         startActivity(intent);
     }
 }

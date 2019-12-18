@@ -23,6 +23,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private Point playerPoint;
     private BackgroundManager backgroundManager;
     private final Bitmap spitSprite;
+    private Database db;
 
     private ArrayList<Bullet> gun = new ArrayList<>();
     int blimpCount = 0;
@@ -50,6 +51,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         blimps.add(new Enemy(20));//init
         orientationData = new OrientationData();
         orientationData.register();
+        db = new Database(context);
 
 
     }
@@ -141,6 +143,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             enemy.decrementX();
             if(enemy.getRectangle().right < 0){
                 enemy.spawnBlimp();
+                crossedBlips++;
             }
             for(int i = 0; i< gun.size();i++){
                 Bullet bullet = gun.get(i);
@@ -151,12 +154,21 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             }
 
         }
+        //END GAME
+        if(crossedBlips>4){
+            this.endGame();
+        }
 
 
         backgroundManager.update();
         spitfire.update(playerPoint);
 
 
+    }
+
+    public void endGame(){
+        this.db.addScore(score);
+        this.thread.setRunning(false);
     }
 
     @Override
@@ -175,6 +187,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         paint.setColor(Color.RED);
         paint.setTextSize(64);
         canvas.drawText("Score: " + String.valueOf(score), 0, 60, paint);
+        canvas.drawText("Crossed : " + String.valueOf(crossedBlips), 0, 120, paint);
 
     }
 }
