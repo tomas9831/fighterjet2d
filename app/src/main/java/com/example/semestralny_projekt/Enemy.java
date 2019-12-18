@@ -16,12 +16,13 @@ public class Enemy {
     private Rect rectangle;
     BitmapFactory bf;
     int speed;
-    int size = 200;
+    int sizex = Constants.SCREEN_WIDTH/8;
+    int sizey = (Constants.SCREEN_WIDTH/8)/2;
     Random ran = new Random();
 
     public Enemy(int speed) {
         this.speed = speed;
-        this.image = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.blimp);
+        this.image = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.test);
         rectangle = new Rect(0, 0, 0, 0);
         spawnBlimp();
 
@@ -30,10 +31,10 @@ public class Enemy {
     public void spawnBlimp() {
         int yStart = ran.nextInt(Constants.SCREEN_HEIGHT / 3);
         int xStart = Constants.SCREEN_WIDTH + (int) (Math.random() * ((Constants.SCREEN_WIDTH * 4 - Constants.SCREEN_WIDTH) + 1));
-        rectangle.set(xStart - size,
-                yStart - size,
-                xStart + size,
-                yStart + size);
+        rectangle.set(xStart - sizex,
+                yStart - sizey,
+                xStart + sizex,
+                yStart + sizey);
 
     }
 

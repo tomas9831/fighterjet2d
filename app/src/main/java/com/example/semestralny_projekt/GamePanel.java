@@ -115,7 +115,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             bullet.update();
 
             if (bullet.getRectangle().top <= 100) {
-                bullet.getRectangle().set(playerPoint.x, playerPoint.y, playerPoint.x, playerPoint.y);
+                //bullet.getRectangle().set(playerPoint.x, playerPoint.y, playerPoint.x, playerPoint.y);
             }
 
 
