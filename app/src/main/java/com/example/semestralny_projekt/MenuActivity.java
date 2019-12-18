@@ -11,7 +11,7 @@ import android.widget.Button;
 
 public class MenuActivity extends AppCompatActivity {
 
-    private Button buttonSand, buttonCity, buttonScore;
+    private Button buttonSand, buttonCity, buttonScore, buttonSettings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +39,13 @@ public class MenuActivity extends AppCompatActivity {
                 openScore();
             }
         });
+        buttonSettings = findViewById(R.id.buttonSettings);
+        buttonSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openSettings();
+            }
+        });
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int height = displayMetrics.heightPixels;
@@ -62,6 +69,10 @@ public class MenuActivity extends AppCompatActivity {
 
     public void openScore() {
         Intent intent = new Intent(this, HighScore.class);
+        startActivity(intent);
+    }
+    public void openSettings() {
+        Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
 }
