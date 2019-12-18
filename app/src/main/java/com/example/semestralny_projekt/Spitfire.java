@@ -8,28 +8,25 @@ import android.graphics.Point;
 import android.graphics.Rect;
 
 
-public class Spitfire{
+public class Spitfire {
 
-    private int x;
-    private int y;
-    private int speed;
     private final Bitmap image;
     private Rect rectangle;
 
     public Spitfire(Bitmap image) {
-        this.image=image;
-        this.rectangle = new Rect(0,0,300,300);
+        this.image = image;
+        this.rectangle = new Rect(0, 0, 300, 300);
     }
 
 
     protected void draw(Canvas canvas) {
-        canvas.drawBitmap(image,null,rectangle,null);
+        canvas.drawBitmap(image, null, rectangle, null);
     }
 
     public void update(Point point) {
         //ltrb
         rectangle.set(point.x - rectangle.width() / 2,
-                point.y - rectangle.height()/2,
+                point.y - rectangle.height() / 2,
                 point.x + rectangle.width() / 2,
                 point.y + rectangle.height() / 2);
     }

@@ -14,14 +14,14 @@ public class Sprite {
 
 
     public Sprite(int left, int top, int right, int bottom, String item) {
-        bmp = new Bitmap[5];
+        bmp = new Bitmap[6];
 
         bmp[0] = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(),R.drawable.palm);
         bmp[1] = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(),R.drawable.house);
         bmp[2] = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(),R.drawable.building1);
         bmp[3] = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(),R.drawable.building2);
         bmp[4] = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(),R.drawable.building3);
-
+        bmp[5] = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(),R.drawable.blimp);
         rectangle = new Rect(left,top,right,bottom);
         switch (item){
             case "palm":
@@ -38,6 +38,9 @@ public class Sprite {
                 break;
             case "building3":
                 this.image=bmp[4];
+                break;
+            case "blimp":
+                this.image=bmp[5];
                 break;
 
         }

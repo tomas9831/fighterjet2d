@@ -82,6 +82,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN:
                 gun.add(new Bullet(playerPoint,50));
+                //gun.get(gun.size() - 1).update();
             case MotionEvent.ACTION_MOVE:
                 playerPoint.set((int)event.getX(),(int)event.getY());
 
@@ -110,7 +111,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             bullet.update();
 
             if(bullet.getRectangle().top<=100){
-                gun.remove(bullet);
+                bullet.getRectangle().set(playerPoint.x,playerPoint.y,playerPoint.x,playerPoint.y);
             }
         }
 
