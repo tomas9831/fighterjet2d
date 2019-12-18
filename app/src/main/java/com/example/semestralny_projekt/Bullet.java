@@ -18,7 +18,7 @@ public class Bullet {
     public Bullet(Point point, int speed) {
         this.speed = speed;
         this.image =  bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(),R.drawable.shell);
-        rectangle = new Rect(0,0,00,0);
+        rectangle = new Rect(0,0,0,0);
         rectangle.set(point.x - 10,
                 point.y - 10,
                 point.x +20,

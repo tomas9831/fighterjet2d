@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Point;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -14,15 +13,16 @@ import android.view.SurfaceView;
 import java.util.ArrayList;
 
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
-    private GameActivity gameActivity;
     private String levelData;
     private MainThread thread;
     private OrientationData orientationData;
     private Spitfire spitfire;
+    private ArrayList<Enemy> blimps = new ArrayList<>();
     private Point playerPoint;
     private BackgroundManager backgroundManager;
     private final Bitmap spitSprite;
     private ArrayList<Bullet> gun = new ArrayList<>();
+    int blimpCount = 0;
 
     public GamePanel(Context context, String levelData) {
         super(context);
@@ -32,24 +32,27 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         backgroundManager = new BackgroundManager(levelData);
         selectLevel(levelData);
         thread = new MainThread(getHolder(), this);
-        this.spitSprite = BitmapFactory.decodeResource(getResources(),R.drawable.spitfire);
+        this.spitSprite = BitmapFactory.decodeResource(getResources(), R.drawable.spitfire);
         spitfire = new Spitfire(spitSprite);
+
 
         playerPoint = new Point(150, 150);
         setFocusable(true);
 
-        gun.add(new Bullet(playerPoint,50));//init
+        gun.add(new Bullet(playerPoint, 50));//init
+        blimps.add(new Enemy(20));//init
         orientationData = new OrientationData();
         orientationData.register();
 
 
     }
 
-    public void selectLevel(String level){
-        this.levelData=level;
+    public void selectLevel(String level) {
+        this.levelData = level;
         Log.d("levelData: ", levelData);
         //backgroundManager.setLevelType(levelData);
     }
+
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         thread = new MainThread(getHolder(), this);
@@ -79,41 +82,55 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getAction()){
+        switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                gun.add(new Bullet(playerPoint,50));
+                gun.add(new Bullet(playerPoint, 50));
                 //gun.get(gun.size() - 1).update();
             case MotionEvent.ACTION_MOVE:
-                playerPoint.set((int)event.getX(),(int)event.getY());
+                playerPoint.set((int) event.getX(), (int) event.getY());
 
         }
         return true;
     }
 
     public void update() {
-        int elapsedTime = (int)(System.currentTimeMillis() - System.currentTimeMillis());
-        if(orientationData.getOrientation() != null && orientationData.getStartOrientation() != null) {
+        int elapsedTime = (int) (System.currentTimeMillis() - System.currentTimeMillis());
+        if (orientationData.getOrientation() != null && orientationData.getStartOrientation() != null) {
             float pitch = orientationData.getOrientation()[1] - orientationData.getStartOrientation()[1];
             float roll = orientationData.getOrientation()[2] - orientationData.getStartOrientation()[2];
 
-            float xSpeed = 2 * roll * Constants.SCREEN_WIDTH/10f;
-            float ySpeed = pitch * Constants.SCREEN_HEIGHT/10f;
+            float xSpeed = 2 * roll * Constants.SCREEN_WIDTH / 10f;
+            float ySpeed = pitch * Constants.SCREEN_HEIGHT / 10f;
             Log.d("orientationRollX", String.valueOf(xSpeed));
             Log.d("orientationRollY", String.valueOf(ySpeed));
 
-            playerPoint.x += Math.abs(xSpeed*elapsedTime) > 5 ? xSpeed*elapsedTime : 0;
+            playerPoint.x += Math.abs(xSpeed * elapsedTime) > 5 ? xSpeed * elapsedTime : 0;
             //playerPoint.y -= Math.abs(ySpeed*elapsedTime) > 5 ? ySpeed*elapsedTime : 0;
             Log.d("orientation", String.valueOf(playerPoint.x));
         }
 
 
-        for(Bullet bullet: gun){
+        for (Bullet bullet : gun) {
             bullet.update();
 
-            if(bullet.getRectangle().top<=100){
-                bullet.getRectangle().set(playerPoint.x,playerPoint.y,playerPoint.x,playerPoint.y);
+            if (bullet.getRectangle().top <= 100) {
+                bullet.getRectangle().set(playerPoint.x, playerPoint.y, playerPoint.x, playerPoint.y);
             }
         }
+        while (blimpCount < 3) {
+            blimps.add(new Enemy(20));
+            blimpCount++;
+        }
+
+
+        for (Enemy enemy : blimps) {
+            enemy.decrementX();
+            if(enemy.getRectangle().right < 0){
+                enemy.spawnBlimp();
+            }
+
+        }
+
 
         backgroundManager.update();
         spitfire.update(playerPoint);
@@ -127,8 +144,11 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         backgroundManager.draw(canvas);
         spitfire.draw(canvas);
 
-        for(Bullet bullet: gun){
+        for (Bullet bullet : gun) {
             bullet.draw(canvas);
+        }
+        for (Enemy enemy : blimps) {
+            enemy.draw(canvas);
         }
     }
 }
