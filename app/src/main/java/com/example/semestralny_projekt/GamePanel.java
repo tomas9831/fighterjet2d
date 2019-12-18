@@ -1,6 +1,7 @@
 package com.example.semestralny_projekt;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -129,6 +130,9 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     public void endGame() {
         this.db.addScore(score);
         this.thread.setRunning(false);
+        Intent i = new Intent(Constants.CURRENT_CONTEXT,HighScore.class);
+        Constants.CURRENT_CONTEXT.startActivity(i);
+
     }
 
     @Override
