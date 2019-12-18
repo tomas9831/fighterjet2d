@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.media.MediaPlayer;
 import android.util.Log;
 
 public class Bullet {
@@ -15,14 +16,22 @@ public class Bullet {
     private Bitmap image;
     BitmapFactory bf;
 
+
     public Bullet(Point point, int speed) {
         this.speed = speed;
+
         this.image =  bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(),R.drawable.shell);
+
+        Constants.mediaPlayer.start();
+        if(Constants.mediaPlayer.isPlaying()==false){
+            Constants.mediaPlayer.release();
+        }
         rectangle = new Rect(0,0,0,0);
         rectangle.set(point.x - 10,
                 point.y - 10,
                 point.x +20,
                 point.y +20);
+
     }
 
     public void draw(Canvas canvas) {
@@ -33,6 +42,12 @@ public class Bullet {
     public void update() {
         rectangle.top -= speed;
         rectangle.bottom -= speed;
+    }
+    public void makeSound(){
+        Constants.mediaPlayer.start();
+        if(Constants.mediaPlayer.isPlaying()==false){
+            Constants.mediaPlayer.release();
+        }
     }
 
     public Rect getRectangle() {

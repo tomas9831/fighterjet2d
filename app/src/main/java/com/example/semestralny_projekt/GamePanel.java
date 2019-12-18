@@ -21,6 +21,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private Point playerPoint;
     private BackgroundManager backgroundManager;
     private final Bitmap spitSprite;
+
     private ArrayList<Bullet> gun = new ArrayList<>();
     int blimpCount = 0;
     int score = 0;
@@ -34,13 +35,15 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         selectLevel(levelData);
         thread = new MainThread(getHolder(), this);
         this.spitSprite = BitmapFactory.decodeResource(getResources(), R.drawable.spitfire);
-        spitfire = new Spitfire(spitSprite);
 
 
-        playerPoint = new Point(150, 150);
+
+        playerPoint = new Point(Constants.SCREEN_WIDTH/2, Constants.SCREEN_HEIGHT-(Constants.SCREEN_HEIGHT/5));
+        spitfire = new Spitfire(spitSprite, playerPoint);
         setFocusable(true);
 
         gun.add(new Bullet(playerPoint, 50));//init
+
         blimps.add(new Enemy(20));//init
         orientationData = new OrientationData();
         orientationData.register();
@@ -85,13 +88,20 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                gun.add(new Bullet(playerPoint, 50));
+                gun.add(new Bullet(playerPoint, 80));
+                //gunSound.makeSound();
                 //gun.get(gun.size() - 1).update();
             case MotionEvent.ACTION_MOVE:
                 playerPoint.set((int) event.getX(), (int) event.getY());
 
         }
         return true;
+    }
+    public void motionLeft(){
+        this.spitfire.moveLeft();
+    }
+    public void motionRight(){
+        this.spitfire.moveRight();
     }
 
     public void update() {

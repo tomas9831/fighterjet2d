@@ -5,16 +5,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
-public class GameActivity extends Activity {
+public class GameActivity extends Activity implements SensorEventListener {
 
     private Context context;
     private String levelData;
-
+    private GamePanel gp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,9 +28,25 @@ public class GameActivity extends Activity {
 
         levelData = intent.getStringExtra("level");
         Log.d("activityData",levelData);
-        //GamePanel gp = new GamePanel(getApplication().getBaseContext());
-        setContentView(new GamePanel(this,levelData));
+        gp = new GamePanel(this,levelData);
+        setContentView(gp);
 
     }
 
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        float x = event.values[0]; //X
+
+        if(x > 0){
+            gp.motionLeft();
+        }
+        if(x < 0){
+            gp.motionRight();
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
 }

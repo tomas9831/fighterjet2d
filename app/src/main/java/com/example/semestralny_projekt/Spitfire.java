@@ -14,10 +14,17 @@ public class Spitfire {
     private final Bitmap image;
     private Rect rectangle;
     private MediaPlayer mediaPlayer;
+    private Point playerPoint;
 
     public Spitfire(Bitmap image) {
         this.image = image;
         this.rectangle = new Rect(0, 0, 300, 300);
+        this.mediaPlayer = MediaPlayer.create(Constants.CURRENT_CONTEXT,R.raw.aircraft);
+    }
+    public Spitfire(Bitmap image, Point playerPoint) {
+        this.image = image;
+        this.rectangle = new Rect(0, 0, 300, 300);
+        this.playerPoint = playerPoint;
         this.mediaPlayer = MediaPlayer.create(Constants.CURRENT_CONTEXT,R.raw.aircraft);
     }
 
@@ -33,5 +40,11 @@ public class Spitfire {
                 point.y - rectangle.height() / 2,
                 point.x + rectangle.width() / 2,
                 point.y + rectangle.height() / 2);
+    }
+    public void moveLeft(){
+        this.playerPoint.x += 20;
+    }
+    public void moveRight(){
+        this.playerPoint.x -= 20;
     }
 }

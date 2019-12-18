@@ -3,6 +3,7 @@ package com.example.semestralny_projekt;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -38,6 +39,7 @@ public class MenuActivity extends AppCompatActivity {
         int width = displayMetrics.widthPixels;
         Constants.SCREEN_HEIGHT = height;
         Constants.SCREEN_WIDTH = width;
+        Constants.mediaPlayer = MediaPlayer.create(getApplicationContext(),R.raw.gunshot);
     }
 
     public void openSand(){
