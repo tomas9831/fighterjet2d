@@ -22,10 +22,7 @@ public class Bullet {
 
         this.image =  bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(),R.drawable.shell);
 
-        Constants.mediaPlayer.start();
-        if(Constants.mediaPlayer.isPlaying()==false){
-            Constants.mediaPlayer.release();
-        }
+        makeSound();
         rectangle = new Rect(0,0,0,0);
         rectangle.set(point.x - 10,
                 point.y - 10,

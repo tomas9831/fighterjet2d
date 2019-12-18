@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Point;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -25,6 +27,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private ArrayList<Bullet> gun = new ArrayList<>();
     int blimpCount = 0;
     int score = 0;
+    int crossedBlips = 0;
 
     public GamePanel(Context context, String levelData) {
         super(context);
@@ -122,11 +125,9 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
 
         for (Bullet bullet : gun) {
+            long startTime = System.currentTimeMillis();
             bullet.update();
 
-            if (bullet.getRectangle().top <= 100) {
-                //bullet.getRectangle().set(playerPoint.x, playerPoint.y, playerPoint.x, playerPoint.y);
-            }
 
 
         }
@@ -170,5 +171,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         for (Enemy enemy : blimps) {
             enemy.draw(canvas);
         }
+        Paint paint = new Paint();
+        paint.setColor(Color.RED);
+        paint.setTextSize(64);
+        canvas.drawText("Score: " + String.valueOf(score), 0, 60, paint);
+
     }
 }
