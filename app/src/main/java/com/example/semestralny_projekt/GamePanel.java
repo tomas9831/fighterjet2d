@@ -15,9 +15,7 @@ import android.view.SurfaceView;
 import java.util.ArrayList;
 
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
-    private String levelData;
     private MainThread thread;
-    private OrientationData orientationData;
     private Spitfire spitfire;
     private ArrayList<Enemy> blimps = new ArrayList<>();
     private Point playerPoint;
@@ -34,33 +32,17 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         super(context);
         getHolder().addCallback(this);
         Constants.CURRENT_CONTEXT = context;
-        this.levelData = levelData;
         backgroundManager = new BackgroundManager(levelData);
-        selectLevel(levelData);
         thread = new MainThread(getHolder(), this);
         this.spitSprite = BitmapFactory.decodeResource(getResources(), R.drawable.spitfire);
-
-
-
-        playerPoint = new Point(Constants.SCREEN_WIDTH/2, Constants.SCREEN_HEIGHT-(Constants.SCREEN_HEIGHT/5));
+        playerPoint = new Point(Constants.SCREEN_WIDTH / 2, Constants.SCREEN_HEIGHT - (Constants.SCREEN_HEIGHT / 5));
         spitfire = new Spitfire(spitSprite, playerPoint);
         setFocusable(true);
-
         gun.add(new Bullet(playerPoint, 50));//init
-
         blimps.add(new Enemy(20));//init
-        orientationData = new OrientationData();
-        orientationData.register();
         db = new Database(context);
-
-
     }
 
-    public void selectLevel(String level) {
-        this.levelData = level;
-        Log.d("levelData: ", levelData);
-        //backgroundManager.setLevelType(levelData);
-    }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
@@ -102,52 +84,33 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         }
         return true;
     }
-    public void motionLeft(){
+
+    public void motionLeft() {
         this.spitfire.moveLeft();
     }
-    public void motionRight(){
+
+    public void motionRight() {
         this.spitfire.moveRight();
     }
 
     public void update() {
-        int elapsedTime = (int) (System.currentTimeMillis() - System.currentTimeMillis());
-        if (orientationData.getOrientation() != null && orientationData.getStartOrientation() != null) {
-            float pitch = orientationData.getOrientation()[1] - orientationData.getStartOrientation()[1];
-            float roll = orientationData.getOrientation()[2] - orientationData.getStartOrientation()[2];
-
-            float xSpeed = 2 * roll * Constants.SCREEN_WIDTH / 10f;
-            float ySpeed = pitch * Constants.SCREEN_HEIGHT / 10f;
-            Log.d("orientationRollX", String.valueOf(xSpeed));
-            Log.d("orientationRollY", String.valueOf(ySpeed));
-
-            playerPoint.x += Math.abs(xSpeed * elapsedTime) > 5 ? xSpeed * elapsedTime : 0;
-            //playerPoint.y -= Math.abs(ySpeed*elapsedTime) > 5 ? ySpeed*elapsedTime : 0;
-            Log.d("orientation", String.valueOf(playerPoint.x));
-        }
-
 
         for (Bullet bullet : gun) {
-            long startTime = System.currentTimeMillis();
             bullet.update();
-
-
-
         }
         while (blimpCount < 3) {
             blimps.add(new Enemy(20));
             blimpCount++;
         }
-
-
         for (Enemy enemy : blimps) {
             enemy.decrementX();
-            if(enemy.getRectangle().right < 0){
+            if (enemy.getRectangle().right < 0) {
                 enemy.spawnBlimp();
                 crossedBlips++;
             }
-            for(int i = 0; i< gun.size();i++){
+            for (int i = 0; i < gun.size(); i++) {
                 Bullet bullet = gun.get(i);
-                if(enemy.getRectangle().intersect(bullet.getRectangle())){
+                if (enemy.getRectangle().intersect(bullet.getRectangle())) {
                     enemy.spawnBlimp();
                     score++;
                 }
@@ -155,18 +118,16 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
         }
         //END GAME
-        if(crossedBlips>4){
+        if (crossedBlips > 3) {
             this.endGame();
         }
-
 
         backgroundManager.update();
         spitfire.update(playerPoint);
 
-
     }
 
-    public void endGame(){
+    public void endGame() {
         this.db.addScore(score);
         this.thread.setRunning(false);
     }
