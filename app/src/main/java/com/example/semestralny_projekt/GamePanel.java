@@ -23,6 +23,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private final Bitmap spitSprite;
     private ArrayList<Bullet> gun = new ArrayList<>();
     int blimpCount = 0;
+    int score = 0;
 
     public GamePanel(Context context, String levelData) {
         super(context);
@@ -116,6 +117,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             if (bullet.getRectangle().top <= 100) {
                 bullet.getRectangle().set(playerPoint.x, playerPoint.y, playerPoint.x, playerPoint.y);
             }
+
+
         }
         while (blimpCount < 3) {
             blimps.add(new Enemy(20));
@@ -127,6 +130,13 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             enemy.decrementX();
             if(enemy.getRectangle().right < 0){
                 enemy.spawnBlimp();
+            }
+            for(int i = 0; i< gun.size();i++){
+                Bullet bullet = gun.get(i);
+                if(enemy.getRectangle().intersect(bullet.getRectangle())){
+                    enemy.spawnBlimp();
+                    score++;
+                }
             }
 
         }
