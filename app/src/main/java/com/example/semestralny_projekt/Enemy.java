@@ -22,7 +22,7 @@ public class Enemy {
 
     public Enemy(int speed) {
         this.speed = speed;
-        this.image = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.test);
+        this.image = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.blimp);
         rectangle = new Rect(0, 0, 0, 0);
         spawnBlimp();
 

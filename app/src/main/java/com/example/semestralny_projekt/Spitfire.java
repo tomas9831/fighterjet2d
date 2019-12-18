@@ -6,16 +6,19 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.media.MediaPlayer;
 
 
 public class Spitfire {
 
     private final Bitmap image;
     private Rect rectangle;
+    private MediaPlayer mediaPlayer;
 
     public Spitfire(Bitmap image) {
         this.image = image;
         this.rectangle = new Rect(0, 0, 300, 300);
+        this.mediaPlayer = MediaPlayer.create(Constants.CURRENT_CONTEXT,R.raw.aircraft);
     }
 
 
@@ -24,6 +27,7 @@ public class Spitfire {
     }
 
     public void update(Point point) {
+        this.mediaPlayer.start();
         //ltrb
         rectangle.set(point.x - rectangle.width() / 2,
                 point.y - rectangle.height() / 2,
