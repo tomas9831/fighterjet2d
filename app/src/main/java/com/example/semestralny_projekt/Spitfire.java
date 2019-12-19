@@ -15,14 +15,18 @@ public class Spitfire {
     private Rect rectangle;
     private MediaPlayer mediaPlayer;
     private Point playerPoint;
+    BitmapFactory bf;
+    private int chosenSkin;
 
-    public Spitfire(Bitmap image) {
-        this.image = image;
-        this.rectangle = new Rect(0, 0, 300, 300);
-        this.mediaPlayer = MediaPlayer.create(Constants.CURRENT_CONTEXT,R.raw.aircraft);
-    }
-    public Spitfire(Bitmap image, Point playerPoint) {
-        this.image = image;
+    public Spitfire(Point playerPoint) {
+        this.chosenSkin = Constants.preferences.getInt("skin",1);
+        if (chosenSkin==1){
+            this.image = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.spitfire);
+        }
+        else {
+            this.image = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.messerschmitt);
+        }
+
         this.rectangle = new Rect(0, 0, 300, 300);
         this.playerPoint = playerPoint;
         this.mediaPlayer = MediaPlayer.create(Constants.CURRENT_CONTEXT,R.raw.aircraft);

@@ -53,6 +53,7 @@ public class MenuActivity extends AppCompatActivity {
         Constants.SCREEN_HEIGHT = height;
         Constants.SCREEN_WIDTH = width;
         Constants.mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.gunshot);
+        Constants.preferences = getSharedPreferences("save", 0);
     }
 
     public void openSand() {

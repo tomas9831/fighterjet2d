@@ -20,7 +20,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private ArrayList<Enemy> blimps = new ArrayList<>();
     private Point playerPoint;
     private BackgroundManager backgroundManager;
-    private final Bitmap spitSprite;
+
     private Database db;
 
     private ArrayList<Bullet> gun = new ArrayList<>();
@@ -34,9 +34,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         Constants.CURRENT_CONTEXT = context;
         backgroundManager = new BackgroundManager(levelData);
         thread = new MainThread(getHolder(), this);
-        this.spitSprite = BitmapFactory.decodeResource(getResources(), R.drawable.spitfire);
         playerPoint = new Point(Constants.SCREEN_WIDTH / 2, Constants.SCREEN_HEIGHT - (Constants.SCREEN_HEIGHT / 5));
-        spitfire = new Spitfire(spitSprite, playerPoint);
+        spitfire = new Spitfire(playerPoint);
         setFocusable(true);
         gun.add(new Bullet(playerPoint, 50));//init
         blimps.add(new Enemy(20));//init
@@ -130,7 +129,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     public void endGame() {
         this.db.addScore(score);
         this.thread.setRunning(false);
-        Intent i = new Intent(Constants.CURRENT_CONTEXT,HighScore.class);
+        Intent i = new Intent(Constants.CURRENT_CONTEXT, HighScore.class);
         Constants.CURRENT_CONTEXT.startActivity(i);
 
     }
