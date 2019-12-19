@@ -129,7 +129,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     public void endGame() {
         this.db.addScore(score);
         this.thread.setRunning(false);
-        Intent i = new Intent(Constants.CURRENT_CONTEXT, HighScore.class);
+        Intent i = new Intent(Constants.CURRENT_CONTEXT, MenuActivity.class);
         Constants.CURRENT_CONTEXT.startActivity(i);
 
     }
